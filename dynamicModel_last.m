@@ -256,8 +256,8 @@ function [xDot] = dynamicModel(t,x,param)
     G2  = GGG(N:N+2,1:2*N);
     Aq  = -inv(M22)*(W2 + G2*fr + G2*fcontact);
     Bq  = -inv(M22)*M21;
-    xDot = [fiDot;pDot;u;Aq+Bq*u;fcontact];
- 
+    %xDot = [fiDot;pDot;u;Aq+Bq*u;fcontact];
+    xDot = [fiDot;pDot;u;Aq+Bq*u];
     
     %{
     fiKryt = 0:0.1:2*pi;
