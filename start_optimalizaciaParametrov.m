@@ -13,14 +13,14 @@ param.d = param.priemer - 2*param.l;
 pocetSnimkov = 100;
 param.dt = 0.01;
 % Friction coefficients:
-param.ct = 0.02;
+param.ct = 0.02;%0.02
 param.cn = 0.04;
 param.ut = 0.1;
 param.un = 0.3;
 param.utPipe = 0.2;
 param.umax = 3;
 param.qmax = 400*param.dt; % 400 st/s ale v case dt to je 400*dt 
-param.Erub = 400000; %95000
+param.Erub = 40000; %last 400000 %95000
 param.vrub = 0.49; 
 param.tlmic = .5;
 param.pruzina = 5;
@@ -32,14 +32,14 @@ param.resultsShow = 0;  % 0 - show simulation, 1 - show graphs
 
 
 % Optimization
-optimization = 0;   % 0 - without, 1 - with
+optimization = 1;   % 0 - without, 1 - with
 
 % Controler parameters:
 param.kp  = 25; %%%***
 param.kd  = 10; %%%***
 
 % Simulation time:
-t=0:param.dt:60;
+t=0:param.dt:30;
 
 % Reference trajectory parameters:
 
@@ -68,19 +68,21 @@ qa          = fi';
 qu          = [theta(param.N);p(1);p(2)];
 qaDot       = fiDot;
 quDot       = [thetaDot(param.N);pDot(1);pDot(2)];
-%x0          = [qa;qu;qaDot;quDot;zeros(2*param.N,1)];%;zeros(2*param.N,1)
-x0          = [qa;qu;qaDot;quDot];
+x0          = [qa;qu;qaDot;quDot;zeros(2*param.N,1)];%;zeros(2*param.N,1)
+%x0          = [qa;qu;qaDot;quDot];
 
 %% Solve
 if optimization == 0
     [T,X] = ode45(@(t,y)dynamicModel_last(t,y,param),t,x0);
     for k=1:2*param.N
-        %contactForces(:,k) = diff(X(:,2*param.N+k));
+       % contactForces(:,k) = diff(X(:,2*param.N+k));
     end
+    %{
     for k=1:param.N
         %torque(:,k) = diff(X(:,param.N+k));
         torque(:,k) = X(:,param.N+k);
     end
+    %}
     run('animacia.m')
 else
     options = optimoptions('fmincon');

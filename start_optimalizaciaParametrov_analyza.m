@@ -77,13 +77,13 @@ for ct = 0.001:0.005:0.3
         qu          = [theta(param.N);p(1);p(2)];
         qaDot       = fiDot;
         quDot       = [thetaDot(param.N);pDot(1);pDot(2)];
-        x0          = [qa;qu;qaDot;quDot;zeros(2*param.N,1)];%;zeros(2*param.N,1)
-        
+        %x0          = [qa;qu;qaDot;quDot;zeros(2*param.N,1)];%;zeros(2*param.N,1)
+        x0          = [qa;qu;qaDot;quDot];
         
         %% Solve
         [T,X] = ode45(@(t,y)dynamicModel_last(t,y,param),t,x0);
         for k=1:2*param.N
-            contactForces(:,k) = diff(X(:,2*param.N+k));
+        %    contactForces(:,k) = diff(X(:,2*param.N+k));
         end
         
         res(por) = abs(X(length(X(:,param.N+1)),param.N+1) - X(2,param.N+1));
