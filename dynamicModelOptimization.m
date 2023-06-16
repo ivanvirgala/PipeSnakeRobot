@@ -22,6 +22,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
     viskozne= param.trenie;
     kontakt = param.kontakt;
     utPipe  = param.utPipe;
+    ctPipe  = param.ctPipe;
     Erub    = param.Erub;
     vrub    = param.vrub;
     umax    = param.umax;
@@ -168,7 +169,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
         fr = -[ct*(Cm.^2)+cn*(Sm.^2), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm.^2)+cn*(Cm.^2)]*[dXc;dYc];
     else    
     % Coulomb
-        fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc]);
+        fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc])
     end
 
      %% Contact
@@ -186,7 +187,11 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
                 fcn(mm,1) = -(sqrt((16*Erub*2*l)/(9*(1-vrub^2))))*((abs(Yc(mm))-(d/2))^(3/2));
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
-                    fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
+                    if(viskozne == 1)
+                        fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
+                    else
+                        fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
+                    end
                 else
                     fctBool(mm,1) = 0;
                     fct(mm,1) = 0;
@@ -195,7 +200,11 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
                 fcn(mm,1) = (sqrt((16*Erub*2*l)/(9*(1-vrub^2))))*((abs(Yc(mm))-(d/2))^(3/2));
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
-                    fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
+                    if(viskozne == 1)
+                        fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
+                    else
+                        fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
+                    end
                 else
                     fctBool(mm,1) = 0;
                     fct(mm,1) = 0;

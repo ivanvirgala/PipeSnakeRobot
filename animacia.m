@@ -1,27 +1,27 @@
 %% Animation of snake robot motion
-figure('units','normalized','outerposition',[0 0 1 1])
+figure('units','normalized','outerposition',[0 0 1 1]);
 fiKryt = 0:0.1:2*pi;
 xKryt = (param.l)*cos(fiKryt);
 yKryt = (param.l)*sin(fiKryt);
 if((param.kontakt == 1) & (param.dimensionPlot3D == 0))
     % Inside of the pipe
-    line([-dlzkaPotrubia dlzkaPotrubia],[0.025+param.d/2 0.025+param.d/2],'color','black')
+    line([-dlzkaPotrubia dlzkaPotrubia],[0.025+param.d/2 0.025+param.d/2],'color','black');
     hold on
-    line([-dlzkaPotrubia dlzkaPotrubia],[-0.025-param.d/2 -0.025-param.d/2],'color','black')
+    line([-dlzkaPotrubia dlzkaPotrubia],[-0.025-param.d/2 -0.025-param.d/2],'color','black');
     hold on
     
     % Outside of the pipe
-    line([-dlzkaPotrubia dlzkaPotrubia],[0.025+param.priemer/2 0.025+param.priemer/2],'color','black', 'linewidth', 5) %10je iba kvoli zozbazeniu aby segment robota neprekracoval potrubie
+    line([-dlzkaPotrubia dlzkaPotrubia],[0.025+param.priemer/2 0.025+param.priemer/2],'color','black', 'linewidth', 5); %10je iba kvoli zozbazeniu aby segment robota neprekracoval potrubie
     hold on
-    line([-dlzkaPotrubia dlzkaPotrubia],[-0.025-param.priemer/2 -0.025-param.priemer/2],'color','black', 'linewidth', 5)
+    line([-dlzkaPotrubia dlzkaPotrubia],[-0.025-param.priemer/2 -0.025-param.priemer/2],'color','black', 'linewidth', 5);
     hold on
 elseif((param.kontakt == 1) & (param.dimensionPlot3D == 1))
     % 3D pipe
-    plotcube([3,0.1,param.d],[-2,-param.priemer-0.025,0],0.3,[0 1 0])
+    plotcube([3,0.1,param.d],[-2,-param.priemer-0.025,0],0.3,[0 1 0]);
     hold on
-    plotcube([3,0.1,param.d],[-2,param.priemer+0.025,0],0.3,[0 1 0])
+    plotcube([3,0.1,param.d],[-2,param.priemer+0.025,0],0.3,[0 1 0]);
     hold on
-    plotcube([3,2*param.priemer-0.05,0.01],[-2,-param.priemer+0.075,0],0.3,[0 1 0])
+    plotcube([3,2*param.priemer-0.05,0.01],[-2,-param.priemer+0.075,0],0.3,[0 1 0]);
     hold on
     camlight;
     lighting phong;
@@ -96,7 +96,7 @@ for i=1:length(ccc(1,:))
 end
 
 saveFig = 0;
-fig=figure(1)
+fig=figure(1);
 row = 3;
 column = 3;
 order = 1;
@@ -119,8 +119,8 @@ for i=1:pocetSnimkov:length(X(:,1))
         end
 
         saveFig = saveFig + 1;
-        modulo = mod(saveFig,7)
-saveas(fig,sprintf('Fig/3D_FIG_%d.jpg',saveFig))
+        modulo = mod(saveFig,7);
+saveas(fig,sprintf('Fig/3D_FIG_%d.jpg',saveFig));
 
         if(param.resultsShow == 1)
             if(modulo == 0)
@@ -133,23 +133,23 @@ saveas(fig,sprintf('Fig/3D_FIG_%d.jpg',saveFig))
                     hold on
                 end
                 %}
-                set(gca,'fontsize',14)
+                set(gca,'fontsize',14);
                 %xlabel('X-axis (m)')
                 %ylabel('Y-axis (m)')
                 %str = sprintf("Time: %0.2f (s)",(i/100));
                 %title(str)
-                saveas(fig,sprintf('Fig/3D_FIG_%d.jpg',saveFig))
+                saveas(fig,sprintf('Fig/3D_FIG_%d.jpg',saveFig));
                 order = order + 1;
                 delete(cm(1));
             end 
         end
 
         % ---------------------------- 3D pipe ----------------------------
-        plotcube([3,0.1,param.d],[-2,-param.priemer-0.025,0],0.3,[0 1 0])
+        plotcube([3,0.1,param.d],[-2,-param.priemer-0.025,0],0.3,[0 1 0]);
         hold on
-        plotcube([3,0.1,param.d],[-2,param.priemer+0.025,0],0.3,[0 1 0])
+        plotcube([3,0.1,param.d],[-2,param.priemer+0.025,0],0.3,[0 1 0]);
         hold on
-        plotcube([3,2*param.priemer-0.05,0.01],[-2,-param.priemer+0.075,0],0.3,[0 1 0])
+        plotcube([3,2*param.priemer-0.05,0.01],[-2,-param.priemer+0.075,0],0.3,[0 1 0]);
         hold on
         camlight;
         lighting phong;
@@ -172,14 +172,17 @@ saveas(fig,sprintf('Fig/3D_FIG_%d.jpg',saveFig))
 
     else
         % ============================== 2D ===============================
-        cm = plot(X(i,param.N+1),X(i,param.N+2),'.','color','red')
-        eval(['xlabel(',(num2str(round(T(i,1)))),')'])
+        cm = plot(X(i,param.N+1),X(i,param.N+2),'.','color','red');
+        eval(['xlabel(',(num2str(round(T(i,1)))),')']);
         for k=1:param.N
             h(k) = line([xLink(k,i) xLink(k,i)],[yLink(k,i) yLink(k,i)],'color','red','LineWidth',2);
             hold on
             
             if(((ycLink(k,i)>(param.d/2)) | (ycLink(k,i)<(-param.d/2))) & (param.kontakt == 1)) 
-                kryt(k) = plot(xcLink(k,i)+xKryt,ycLink(k,i)+yKryt,'color','green','LineWidth',2);
+                %kryt(k) =
+                %plot(xcLink(k,i)+xKryt,ycLink(k,i)+yKryt,'color','green','LineWidth',2);
+                %pre kontakt
+                kryt(k) = plot(xcLink(k,i)+xKryt,ycLink(k,i)+yKryt,'color','blue','LineWidth',2);
             else
                 kryt(k) = plot(xcLink(k,i)+xKryt,ycLink(k,i)+yKryt,'color','blue','LineWidth',2);
             end
@@ -189,41 +192,41 @@ saveas(fig,sprintf('Fig/3D_FIG_%d.jpg',saveFig))
 
 
         saveFig = saveFig + 1;
-        modulo = mod(saveFig,6)
+        modulo = mod(saveFig,6);
         if param.kontakt == 1
              % Inside of the pipe
-            line([-dlzkaPotrubia dlzkaPotrubia],[0.03+param.d/2 0.03+param.d/2],'color','black')
+            line([-dlzkaPotrubia dlzkaPotrubia],[0.03+param.d/2 0.03+param.d/2],'color','black');
             hold on
-            line([-dlzkaPotrubia dlzkaPotrubia],[-0.03-param.d/2 -0.03-param.d/2],'color','black')
+            line([-dlzkaPotrubia dlzkaPotrubia],[-0.03-param.d/2 -0.03-param.d/2],'color','black');
             hold on
             
             % Outside of the pipe
-            line([-dlzkaPotrubia dlzkaPotrubia],[0.03+param.priemer/2 0.03+param.priemer/2],'color','black', 'linewidth', 3) %10je iba kvoli zozbazeniu aby segment robota neprekracoval potrubie
+            line([-dlzkaPotrubia dlzkaPotrubia],[0.03+param.priemer/2 0.03+param.priemer/2],'color','black', 'linewidth', 3); %10je iba kvoli zozbazeniu aby segment robota neprekracoval potrubie
             hold on
-            line([-dlzkaPotrubia dlzkaPotrubia],[-0.03-param.priemer/2 -0.03-param.priemer/2],'color','black', 'linewidth', 3)
+            line([-dlzkaPotrubia dlzkaPotrubia],[-0.03-param.priemer/2 -0.03-param.priemer/2],'color','black', 'linewidth', 3);
             hold on
         end
 
         if(param.resultsShow == 1)
             if(modulo == 0)
                 del = 1;
-                subplot(row,column,order)
+                subplot(row,column,order);
                 hold on
                 for j=1:100:i
                     cm(i) = plot(X(j,param.N+1),X(j,param.N+2),'.','color','red');
                     hold on
                 end
-                set(gca,'fontsize',18)
-                xlabel('X-axis (m)')
-                ylabel('Y-axis (m)')
+                set(gca,'fontsize',18);
+                xlabel('X-axis (m)');
+                ylabel('Y-axis (m)');
                 str = sprintf("Time: %0.2f (s)",(i/100));
-                title(str)
-                saveas(fig,sprintf('Fig/FIG_%d.fig',saveFig))
+                title(str);
+                saveas(fig,sprintf('Fig/FIG_%d.fig',saveFig));
                 order = order + 1;
             end 
         end
 
-        axis([-dlzkaPotrubia dlzkaPotrubia -0.5 0.5]);
+        axis([-dlzkaPotrubia dlzkaPotrubia -0.8 0.8]);
         axis equal
         pause(.001);
 
@@ -240,7 +243,7 @@ saveas(fig,sprintf('Fig/3D_FIG_%d.jpg',saveFig))
         del = 0;
         grid on;      
         axis equal
-        axis([-dlzkaPotrubia dlzkaPotrubia -0.5 0.5]);
+        axis([-dlzkaPotrubia dlzkaPotrubia -0.8 0.8]);
     end
   
 end

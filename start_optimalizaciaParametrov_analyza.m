@@ -1,8 +1,8 @@
 clc;
 clear;
 por = 1;
-for ct = 0.001:0.005:0.3
-    for cn = 0.001:0.005:0.3
+for ct = 0.01:0.005:0.4
+    for cn = 0.01:0.005:0.4
         clearvars -except res por ctArray cnArray ct cn
         %% ============================= Parameters ===============================
         % Snake parameters (mass: m; length: 2l)
@@ -22,6 +22,7 @@ for ct = 0.001:0.005:0.3
         param.ut = 0.1;
         param.un = 0.3;
         param.utPipe = 0.2;
+        param.ctPipe = 0.015;
         param.umax = 3;
         param.qmax = 400*param.dt; % 400 st/s ale v case dt to je 400*dt 
         param.Erub = 400000; %95000
@@ -43,7 +44,7 @@ for ct = 0.001:0.005:0.3
         param.kd  = 10; %%%***
         
         % Simulation time:
-        t=0:param.dt:60;
+        t=0:param.dt:30;
         
         % Reference trajectory parameters:
         
@@ -77,8 +78,8 @@ for ct = 0.001:0.005:0.3
         qu          = [theta(param.N);p(1);p(2)];
         qaDot       = fiDot;
         quDot       = [thetaDot(param.N);pDot(1);pDot(2)];
-        %x0          = [qa;qu;qaDot;quDot;zeros(2*param.N,1)];%;zeros(2*param.N,1)
-        x0          = [qa;qu;qaDot;quDot];
+        x0          = [qa;qu;qaDot;quDot;zeros(2*param.N,1)];%;zeros(2*param.N,1)
+        %x0          = [qa;qu;qaDot;quDot];
         
         %% Solve
         [T,X] = ode45(@(t,y)dynamicModel_last(t,y,param),t,x0);
