@@ -4,7 +4,7 @@ clear
 % Snake parameters (mass: m; length: 2l)
 traveledDistance = 0;
 poradie = 1;
-for N=3:4:50 
+for N=3:1:100 
     clearvars -except N poradie traveledDistance
     param.N  = N;
     param.m  = 0.406;
@@ -29,7 +29,7 @@ for N=3:4:50
     param.vrub = 0.49; 
     param.tlmic = .5;
     param.pruzina = 5;
-    param.trenie = 1;   % 0 - Coulomb, 1 - viscous
+    param.trenie = 0;   % 0 - Coulomb, 1 - viscous
     param.kontakt = 1;   % 0 - bez, 1 - s
     param.minLinkVel = 0.001;   % [mm]
     param.dimensionPlot3D = 0;  % 0 - 2D, 1 - 3D
@@ -44,7 +44,7 @@ for N=3:4:50
     param.kd  = 10; %%%***
     
     % Simulation time:
-    t=0:param.dt:30;
+    t=0:param.dt:60;
     
     % Reference trajectory parameters:
     

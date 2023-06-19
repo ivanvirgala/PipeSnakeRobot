@@ -22,6 +22,7 @@ function [xDot] = dynamicModel(t,x,param)
     viskozne= param.trenie;
     kontakt = param.kontakt;
     utPipe  = param.utPipe;
+    ctPipe  = param.ctPipe;
     Erub    = param.Erub;
     vrub    = param.vrub;
     umax    = param.umax;
@@ -186,7 +187,11 @@ function [xDot] = dynamicModel(t,x,param)
                 fcn(mm,1) = -(sqrt((16*Erub*2*l)/(9*(1-vrub^2))))*((abs(Yc(mm))-(d/2))^(3/2));
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
-                    fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
+                    if(viskozne == 1)
+                        fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
+                    else
+                        fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
+                    end
                 else
                     fctBool(mm,1) = 0;
                     fct(mm,1) = 0;
@@ -195,7 +200,11 @@ function [xDot] = dynamicModel(t,x,param)
                 fcn(mm,1) = (sqrt((16*Erub*2*l)/(9*(1-vrub^2))))*((abs(Yc(mm))-(d/2))^(3/2));
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
-                    fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
+                    if(viskozne == 1)
+                        fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
+                    else
+                        fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
+                    end
                 else
                     fctBool(mm,1) = 0;
                     fct(mm,1) = 0;

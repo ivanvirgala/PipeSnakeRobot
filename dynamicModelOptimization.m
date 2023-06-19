@@ -169,7 +169,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
         fr = -[ct*(Cm.^2)+cn*(Sm.^2), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm.^2)+cn*(Cm.^2)]*[dXc;dYc];
     else    
     % Coulomb
-        fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc])
+        fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc]);
     end
 
      %% Contact
