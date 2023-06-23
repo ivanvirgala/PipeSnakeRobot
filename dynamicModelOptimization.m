@@ -166,7 +166,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
 
     % Viscous
     if(viskozne==1)
-        fr = -[ct*(Cm.^2)+cn*(Sm.^2), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm.^2)+cn*(Cm.^2)]*[dXc;dYc];
+        fr = -[ct*(Cm*Cm)+cn*(Sm*Sm), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm*Sm)+cn*(Cm*Cm)]*[dXc;dYc];
     else    
     % Coulomb
         fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc]);
@@ -227,6 +227,14 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
 
     ground = fcontact + fr;
 
+    %% Propulsive force - only for analyses
+    if(viskozne == 1)
+        Fp = -k'*((ct*Cm*Cm + cn*Sm*Sm)*dXc + (ct-cn)*Sm*Cm*dYc) - ctPipe*fctBool'*dXc
+        FpPipe = -ctPipe*fctBool'*dXc;
+    else
+        Fp = -k'*(m*g*ut*Cm - m*g*un*Sm)*sign(Cm*dXc + Sm*dYc) - utPipe*fctBool'*fct
+        FpPipe = -utPipe*fctBool'*fct;
+    end
     %% Model
 
     for i=1:N-1
@@ -267,7 +275,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
     Aq  = -inv(M22)*(W2 + G2*fr + G2*fcontact);
     Bq  = -inv(M22)*M21;    
 
-    xDot = [fiDot;pDot;u;Aq+Bq*u;fcontact];
+    xDot = [fiDot;pDot;u;Aq+Bq*u;fcontact;Fp;FpPipe];
 end
     
 

@@ -1,4 +1,5 @@
 function [xDot] = dynamicModel(t,x,param)
+    
     %% Basic parameters
     ut      = param.ut;
     un      = param.un;
@@ -166,10 +167,10 @@ function [xDot] = dynamicModel(t,x,param)
 
     % Viscous
     if(viskozne==1)
-        fr = -[ct*(Cm.^2)+cn*(Sm.^2), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm.^2)+cn*(Cm.^2)]*[dXc;dYc];
+        fr = -[ct*(Cm*Cm)+cn*(Sm*Sm), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm*Sm)+cn*(Cm*Cm)]*[dXc;dYc]
     else    
     % Coulomb
-        fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc]);
+        fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc])
     end
     
     %% Contact
@@ -226,7 +227,14 @@ function [xDot] = dynamicModel(t,x,param)
     end
 
     ground = fcontact + fr;
-
+    %% Propulsive force - only for analyses
+    if(viskozne == 1)
+        Fp = -k'*((ct*Cm*Cm + cn*Sm*Sm)*dXc + (ct-cn)*Sm*Cm*dYc) + ctPipe*fctBool'*(dXc*sign(dXc'))
+        FpPipe = ctPipe*fctBool'*dXc
+    else
+        Fp = -k'*(m*g*ut*Cm - m*g*un*Sm)*sign(Cm*dXc + Sm*dYc) + utPipe*fctBool'*fct
+        FpPipe = utPipe*fctBool'*fct
+    end
     %% Model
 
     for i=1:N-1
@@ -265,54 +273,8 @@ function [xDot] = dynamicModel(t,x,param)
     G2  = GGG(N:N+2,1:2*N);
     Aq  = -inv(M22)*(W2 + G2*fr + G2*fcontact);
     Bq  = -inv(M22)*M21;
-    xDot = [fiDot;pDot;u;Aq+Bq*u;fcontact];
+    xDot = [fiDot;pDot;u;Aq+Bq*u;Fp;FpPipe]; %;fcontact;Fp
     %xDot = [fiDot;pDot;u;Aq+Bq*u];
-    
-    %{
-    fiKryt = 0:0.1:2*pi;
-    xKryt = (param.l)*cos(fiKryt);
-    yKryt = (param.l)*sin(fiKryt);
-
-    for k=1:N
-        %h(k) = line([xLink(k,i) xLink(k,i)],[yLink(k,i) yLink(k,i)],'color','red','LineWidth',2);
-        hold on;
-        %h(k) = line([result_X(k,i) (result_X(k,i)+l*cosd(result_theta(k,i)))],[result_Y(k,i) (result_Y(k,i)+l*sind(result_theta(k,i)))],'color','black');
-        %hold on
-        if(Yc(k)==0) %fcn(k)
-            cmFct(k) = line([Xc(k) (Xc(k)-0.1)],[Yc(k) (Yc(k))],'color','white','LineWidth',3);%X(k,(2*param.N+4)+k))
-            hold on
-            cmFcn(k) = line([Xc(k) (Xc(k))],[Yc(k) (Yc(k)+0.1)],'color','white','LineWidth',3);%+X(k,(2*param.N+4)+k))
-            hold on
-        else
-
-
-            cmFct(k) = line([Xc(k) (Xc(k)-0.1)],[Yc(k) (Yc(k))],'color','green','LineWidth',3);%X(k,(2*param.N+4)+k))
-            hold on
-            cmFcn(k) = line([Xc(k) (Xc(k))],[Yc(k) (Yc(k)+0.1)],'color','green','LineWidth',3);%+X(k,(2*param.N+4)+k))
-            hold on
-        end
-        if(k==1)
-            kryt(k) = plot(Xc(k)+xKryt,Yc(k)+yKryt,'color','blue','LineWidth',2);
-        else
-            kryt(k) = plot(Xc(k)+xKryt,Yc(k)+yKryt,'color','blue','LineWidth',2);
-        end
-        hold on;
-    end
-    grid on;
-    
-    pause(.001);
-    
-    if(i<length(X(:,1)))
-        for lm=1:N
-            %delete(p(lm));
-            %delete(h(lm));
-            %delete(m(lm));
-            delete(cmFct(lm));delete(cmFcn(lm));
-            %delete(silX);delete(silY);
-            delete(kryt(lm));
-        end
-    end
-    %}
 end
     
 
