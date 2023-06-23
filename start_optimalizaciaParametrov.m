@@ -18,7 +18,7 @@ param.ct = 0.015;%0.02
 param.cn = 0.03;
 param.ut = 0.15; %zatial 0.15 ku 0.3 najlepsie
 param.un = 0.3;
-param.ctPipe = 0.015;
+param.ctPipe = 0.09;
 param.utPipe = 0.3;
 param.umax = 3;
 param.qmax = 400*param.dt; % 400 st/s ale v case dt to je 400*dt 
@@ -26,7 +26,7 @@ param.Erub = 400000; %last 400000 %95000
 param.vrub = 0.49; 
 param.tlmic = .5;
 param.pruzina = 5;
-param.trenie = 1;   % 0 - Coulomb, 1 - viscous
+param.trenie = 0;   % 0 - Coulomb, 1 - viscous
 param.kontakt = 1;   % 0 - bez, 1 - s
 param.minLinkVel = 0.001;   % [mm]
 param.dimensionPlot3D = 0;  % 0 - 2D, 1 - 3D
@@ -41,7 +41,7 @@ param.kp  = 25; %%%***
 param.kd  = 10; %%%***
 
 % Simulation time:
-t=0:param.dt:100;
+t=0:param.dt:7;
 
 % Reference trajectory parameters:
 
@@ -86,7 +86,13 @@ if optimization == 0
     Fp(:) = diff(X(:,35));
     Fp = Fp*100;
     FpPipe(:) = diff(X(:,36));
-    
+    FpPipe = FpPipe*100;
+    subplot(3,1,1)
+    plot(Fp)
+    subplot(3,1,2)
+    plot(FpPipe)
+    subplot(3,1,3)
+    run('animacia.m')
     %{
     for k=1:param.N
         %torque(:,k) = diff(X(:,param.N+k));

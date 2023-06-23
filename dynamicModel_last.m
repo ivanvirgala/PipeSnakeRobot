@@ -167,10 +167,10 @@ function [xDot] = dynamicModel(t,x,param)
 
     % Viscous
     if(viskozne==1)
-        fr = -[ct*(Cm*Cm)+cn*(Sm*Sm), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm*Sm)+cn*(Cm*Cm)]*[dXc;dYc]
+        fr = -[ct*(Cm*Cm)+cn*(Sm*Sm), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm*Sm)+cn*(Cm*Cm)]*[dXc;dYc];
     else    
     % Coulomb
-        fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc])
+        fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc]);
     end
     
     %% Contact
@@ -189,7 +189,7 @@ function [xDot] = dynamicModel(t,x,param)
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
                     if(viskozne == 1)
-                        fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
+                        fct(mm,1) = fctBool(mm)*ctPipe*dXc(mm)*sign(-dXc(mm));
                     else
                         fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
                     end
@@ -202,7 +202,7 @@ function [xDot] = dynamicModel(t,x,param)
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
                     if(viskozne == 1)
-                        fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
+                        fct(mm,1) = fctBool(mm)*ctPipe*dXc(mm)*sign(-dXc(mm));
                     else
                         fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
                     end
@@ -229,11 +229,11 @@ function [xDot] = dynamicModel(t,x,param)
     ground = fcontact + fr;
     %% Propulsive force - only for analyses
     if(viskozne == 1)
-        Fp = -k'*((ct*Cm*Cm + cn*Sm*Sm)*dXc + (ct-cn)*Sm*Cm*dYc) + ctPipe*fctBool'*(dXc*sign(dXc'))
-        FpPipe = ctPipe*fctBool'*dXc
+        Fp = -k'*((ct*Cm*Cm + cn*Sm*Sm)*dXc + (ct-cn)*Sm*Cm*dYc) + fctBool'*fct% + ctPipe*fctBool'*dXc 
+        FpPipe = fctBool'*fct; %-ctPipe*fctBool'*dXc
     else
-        Fp = -k'*(m*g*ut*Cm - m*g*un*Sm)*sign(Cm*dXc + Sm*dYc) + utPipe*fctBool'*fct
-        FpPipe = utPipe*fctBool'*fct
+        Fp = k'*(m*g*ut*Cm - m*g*un*Sm)*sign(Cm*dXc + Sm*dYc) - fctBool'*fct
+        FpPipe = fctBool'*fct
     end
     %% Model
 
