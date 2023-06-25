@@ -27,7 +27,7 @@ param.vrub = 0.49;
 param.tlmic = .5;
 param.pruzina = 5;
 param.trenie = 0;   % 0 - Coulomb, 1 - viscous
-param.kontakt = 1;   % 0 - bez, 1 - s
+param.kontakt = 0;   % 0 - bez, 1 - s
 param.minLinkVel = 0.001;   % [mm]
 param.dimensionPlot3D = 0;  % 0 - 2D, 1 - 3D
 param.resultsShow = 0;  % 0 - show simulation, 1 - show graphs 
@@ -41,7 +41,7 @@ param.kp  = 25; %%%***
 param.kd  = 10; %%%***
 
 % Simulation time:
-t=0:param.dt:7;
+t=0:param.dt:10;
 
 % Reference trajectory parameters:
 

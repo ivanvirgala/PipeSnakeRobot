@@ -228,11 +228,16 @@ function [xDot] = dynamicModel(t,x,param)
 
     ground = fcontact + fr;
     %% Propulsive force - only for analyses
+    for kk=1:N
+        FrP(kk,1) = fr(kk,1);
+    end
     if(viskozne == 1)
-        Fp = -k'*((ct*Cm*Cm + cn*Sm*Sm)*dXc + (ct-cn)*Sm*Cm*dYc) + fctBool'*fct% + ctPipe*fctBool'*dXc 
+        %Fp = -k'*((ct*Cm*Cm + cn*Sm*Sm)*dXc + (ct-cn)*Sm*Cm*dYc) + fctBool'*fct% + ctPipe*fctBool'*dXc 
+        Fp = k'*FrP + fctBool'*fct
         FpPipe = fctBool'*fct; %-ctPipe*fctBool'*dXc
     else
-        Fp = k'*(m*g*ut*Cm - m*g*un*Sm)*sign(Cm*dXc + Sm*dYc) - fctBool'*fct
+        %Fp = k'*(m*g*ut*Cm - m*g*un*Sm)*sign(Cm*dXc + Sm*dYc) - fctBool'*fct
+        Fp = k'*FrP + fctBool'*fct
         FpPipe = fctBool'*fct
     end
     %% Model
