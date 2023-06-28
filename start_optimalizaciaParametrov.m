@@ -1,6 +1,6 @@
 clc;
 %clear
-clearvars -except FpContactless FpPipeContactless
+clearvars -except FpContactless15 FpContactless30 FpContactless45 FpContactless60 FpContactless75
 %% ============================= Parameters ===============================
 % Snake parameters (mass: m; length: 2l)
 param.N  = 15;
@@ -18,7 +18,7 @@ param.ct = 0.015;%0.02
 param.cn = 0.03;
 param.ut = 0.15; %zatial 0.15 ku 0.3 najlepsie
 param.un = 0.3;
-param.ctPipe = 0.09;
+param.ctPipe = 0.08;
 param.utPipe = 0.3;
 param.umax = 3;
 param.qmax = 400*param.dt; % 400 st/s ale v case dt to je 400*dt 
@@ -26,22 +26,22 @@ param.Erub = 400000; %last 400000 %95000
 param.vrub = 0.49; 
 param.tlmic = .5;
 param.pruzina = 5;
-param.trenie = 0;   % 0 - Coulomb, 1 - viscous
-param.kontakt = 0;   % 0 - bez, 1 - s
+param.trenie = 1;   % 0 - Coulomb, 1 - viscous
+param.kontakt = 1;   % 0 - bez, 1 - s
 param.minLinkVel = 0.001;   % [mm]
 param.dimensionPlot3D = 0;  % 0 - 2D, 1 - 3D
 param.resultsShow = 0;  % 0 - show simulation, 1 - show graphs 
 
 
 % Optimization
-optimization = 0;   % 0 - without, 1 - with
+optimization = 1;   % 0 - without, 1 - with
 
 % Controler parameters:
 param.kp  = 25; %%%***
 param.kd  = 10; %%%***
 
 % Simulation time:
-t=0:param.dt:10;
+t=0:param.dt:60;
 
 % Reference trajectory parameters:
 
@@ -70,8 +70,8 @@ qa          = fi';
 qu          = [theta(param.N);p(1);p(2)];
 qaDot       = fiDot;
 quDot       = [thetaDot(param.N);pDot(1);pDot(2)];
-x0          = [qa;qu;qaDot;quDot;0;0];% ;zeros(2*param.N,1);0: +Fcontanct, +Fp
-%x0          = [qa;qu;qaDot;quDot];
+%x0          = [qa;qu;qaDot;quDot;0;0];% ;zeros(2*param.N,1);0: +Fcontanct, +Fp
+x0          = [qa;qu;qaDot;quDot];
 global fvalData;
 fvalData = [];
 %% Solve
@@ -82,24 +82,27 @@ if optimization == 0
        contactForces(:,k) = diff(X(:,2*param.N+k));
     end
     %}
-    
-    Fp(:) = diff(X(:,35));
+    %{
+    Fp(:) = diff(X(:,2*param.N+5));
     Fp = Fp*100;
-    FpPipe(:) = diff(X(:,36));
+    FpPipe(:) = diff(X(:,2*param.N+6));
     FpPipe = FpPipe*100;
+    
+    
     subplot(3,1,1)
     plot(Fp)
     subplot(3,1,2)
     plot(FpPipe)
     subplot(3,1,3)
     run('animacia.m')
+    %}
     %{
     for k=1:param.N
         %torque(:,k) = diff(X(:,param.N+k));
         torque(:,k) = X(:,param.N+k);
     end
     %}
-    %run('animacia.m')
+    run('animacia.m')
 else
     %options = optimoptions('fmincon', 'OutputFcn', @displayIntermediateValues, 'Display', 'iter');
     options = optimoptions('fmincon', 'OutputFcn', @displayIntermediateValues, 'Display', 'iter-detailed');
@@ -137,7 +140,7 @@ else
         fi_reference(i) = fi(1);
     end
     [T,X] = ode45(@(t,y)dynamicModel_last(t,y,param),t,x0);
-    %run('animacia.m');
+    run('animacia.m');
 end
 
 

@@ -187,7 +187,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
                 fcn(mm,1) = -(sqrt((16*Erub*2*l)/(9*(1-vrub^2))))*((abs(Yc(mm))-(d/2))^(3/2));
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
-                    if(viskozne == 1)
+                    if(viskozne == 0) % naopak
                         fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
                     else
                         fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
@@ -200,7 +200,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
                 fcn(mm,1) = (sqrt((16*Erub*2*l)/(9*(1-vrub^2))))*((abs(Yc(mm))-(d/2))^(3/2));
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
-                    if(viskozne == 1)
+                    if(viskozne == 0) % naopak
                         fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
                     else
                         fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
@@ -226,7 +226,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
     end
 
     ground = fcontact + fr;
-
+    %{
     %% Propulsive force - only for analyses
     if(viskozne == 1)
         Fp = -k'*((ct*Cm*Cm + cn*Sm*Sm)*dXc + (ct-cn)*Sm*Cm*dYc) - ctPipe*fctBool'*dXc
@@ -235,6 +235,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
         Fp = -k'*(m*g*ut*Cm - m*g*un*Sm)*sign(Cm*dXc + Sm*dYc) - utPipe*fctBool'*fct
         FpPipe = -utPipe*fctBool'*fct;
     end
+    %}
     %% Model
 
     for i=1:N-1
@@ -274,8 +275,8 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
 
     Aq  = -inv(M22)*(W2 + G2*fr + G2*fcontact);
     Bq  = -inv(M22)*M21;    
-
-    xDot = [fiDot;pDot;u;Aq+Bq*u;fcontact;Fp;FpPipe];
+    xDot = [fiDot;pDot;u;Aq+Bq*u];
+    %xDot = [fiDot;pDot;u;Aq+Bq*u;fcontact];
 end
     
 

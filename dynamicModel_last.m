@@ -233,12 +233,12 @@ function [xDot] = dynamicModel(t,x,param)
     end
     if(viskozne == 1)
         %Fp = -k'*((ct*Cm*Cm + cn*Sm*Sm)*dXc + (ct-cn)*Sm*Cm*dYc) + fctBool'*fct% + ctPipe*fctBool'*dXc 
-        Fp = k'*FrP + fctBool'*fct
+        Fp = k'*FrP + fctBool'*fct;
         FpPipe = fctBool'*fct; %-ctPipe*fctBool'*dXc
     else
         %Fp = k'*(m*g*ut*Cm - m*g*un*Sm)*sign(Cm*dXc + Sm*dYc) - fctBool'*fct
-        Fp = k'*FrP + fctBool'*fct
-        FpPipe = fctBool'*fct
+        Fp = k'*FrP + fctBool'*fct;
+        FpPipe = fctBool'*fct;
     end
     %% Model
 
@@ -278,8 +278,8 @@ function [xDot] = dynamicModel(t,x,param)
     G2  = GGG(N:N+2,1:2*N);
     Aq  = -inv(M22)*(W2 + G2*fr + G2*fcontact);
     Bq  = -inv(M22)*M21;
-    xDot = [fiDot;pDot;u;Aq+Bq*u;Fp;FpPipe]; %;fcontact;Fp
-    %xDot = [fiDot;pDot;u;Aq+Bq*u];
+    %xDot = [fiDot;pDot;u;Aq+Bq*u;Fp;FpPipe]; %;fcontact;Fp
+    xDot = [fiDot;pDot;u;Aq+Bq*u];
 end
     
 
