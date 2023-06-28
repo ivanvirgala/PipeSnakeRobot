@@ -187,7 +187,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
                 fcn(mm,1) = -(sqrt((16*Erub*2*l)/(9*(1-vrub^2))))*((abs(Yc(mm))-(d/2))^(3/2));
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
-                    if(viskozne == 0) % naopak
+                    if(viskozne == 1) % naopak
                         fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
                     else
                         fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));
@@ -200,7 +200,7 @@ function [xDot] = dynamicModelOptimization(t,x,param,optParametre)
                 fcn(mm,1) = (sqrt((16*Erub*2*l)/(9*(1-vrub^2))))*((abs(Yc(mm))-(d/2))^(3/2));
                 if(abs(dXc(mm))>minLinkVel)
                     fctBool(mm,1) = 1;
-                    if(viskozne == 0) % naopak
+                    if(viskozne == 1) % naopak
                         fct(mm,1) = fctBool(mm)*ctPipe*sign(-dXc(mm));
                     else
                         fct(mm,1) = fctBool(mm)*(abs(fcn(mm))*utPipe*sign(-dXc(mm)));

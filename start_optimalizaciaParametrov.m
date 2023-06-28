@@ -19,14 +19,14 @@ param.cn = 0.03;
 param.ut = 0.15; %zatial 0.15 ku 0.3 najlepsie
 param.un = 0.3;
 param.ctPipe = 0.08;
-param.utPipe = 0.3;
+param.utPipe = 0.2;
 param.umax = 3;
 param.qmax = 400*param.dt; % 400 st/s ale v case dt to je 400*dt 
 param.Erub = 400000; %last 400000 %95000
 param.vrub = 0.49; 
 param.tlmic = .5;
 param.pruzina = 5;
-param.trenie = 1;   % 0 - Coulomb, 1 - viscous
+param.trenie = 0;   % 0 - Coulomb, 1 - viscous
 param.kontakt = 1;   % 0 - bez, 1 - s
 param.minLinkVel = 0.001;   % [mm]
 param.dimensionPlot3D = 0;  % 0 - 2D, 1 - 3D
@@ -41,7 +41,7 @@ param.kp  = 25; %%%***
 param.kd  = 10; %%%***
 
 % Simulation time:
-t=0:param.dt:60;
+t=0:param.dt:10;
 
 % Reference trajectory parameters:
 
