@@ -26,7 +26,7 @@ param.Erub = 400000; %last 400000 %95000
 param.vrub = 0.49; 
 param.tlmic = .5;
 param.pruzina = 5;
-param.trenie = 0;   % 0 - Coulomb, 1 - viscous
+param.trenie = 1;   % 0 - Coulomb, 1 - viscous
 param.kontakt = 1;   % 0 - bez, 1 - s
 param.minLinkVel = 0.001;   % [mm]
 param.dimensionPlot3D = 0;  % 0 - 2D, 1 - 3D
@@ -41,7 +41,7 @@ param.kp  = 25; %%%***
 param.kd  = 10; %%%***
 
 % Simulation time:
-t=0:param.dt:10;
+t=0:param.dt:30;
 
 % Reference trajectory parameters:
 
@@ -119,7 +119,7 @@ else
     nonlcon = [];
     %lb = [0.1,0.4,0.3]; % musi byt limitovany zdola, lebo ak ma prilis nizke cislo alfa tak ide opacnym smerom pretoze uz nie je taky zaber o potrubie a pohybuje sa ako keby tam nebolo potrubie
     lb = [0,0,0];
-    ub = [0.4,1,1]; % musi byt limitovany lebo ak ma prilis vysoke cislo alfa tak robi hluposti nerealne
+    ub = [0.25,1,1]; % musi byt limitovany lebo ak ma prilis vysoke cislo alfa tak robi hluposti nerealne
     [pbest,fval] = fmincon(@(optParametre)-objective(t,param,optParametre,x0),y0,A,b,Ae,be,lb,ub,nonlcon,options)
     %load('intermediate_solutions.mat', 'result_vector');
     %disp(result_vector);
