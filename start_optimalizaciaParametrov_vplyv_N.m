@@ -1,16 +1,16 @@
 clc;
-clear
+%clear
 %% ============================= Parameters ===============================
 % Snake parameters (mass: m; length: 2l)
 traveledDistance = 0;
 poradie = 1;
-for N=3:1:100 
-    clearvars -except N poradie traveledDistance
+for N=3:1:100
+    clearvars -except N poradie traveledDistance traveledDistanceCoulomb
     param.N  = N;
     param.m  = 0.406;
     param.l  = 0.0525;
     param.g  = 9.81;
-    param.priemer = 0.30;
+    param.priemer = 0.60;
     param.priemerInfluence = 0.10;
     dlzkaPotrubia = 3;
     param.d = param.priemer - 2*param.l;
@@ -21,7 +21,7 @@ for N=3:1:100
     param.cn = 0.03;
     param.ut = 0.15; %zatial 0.15 ku 0.3 najlepsie
     param.un = 0.25;
-    param.ctPipe = 0.015;
+    param.ctPipe = 0.035;
     param.utPipe = 0.2;
     param.umax = 3;
     param.qmax = 400*param.dt; % 400 st/s ale v case dt to je 400*dt 
@@ -44,14 +44,14 @@ for N=3:1:100
     param.kd  = 10; %%%***
     
     % Simulation time:
-    t=0:param.dt:60;
+    t=0:param.dt:30;
     
     % Reference trajectory parameters:
     
     % 0.3981    0.6936    0.4914
-    param.alfa = 0.3981;%deg2rad(56.4012);     % 52.11
-    param.omega = 0.6936;%deg2rad(49.7791);    % 0.13
-    param.delta = 0.4914;%deg2rad(1.4074);  % 0.5041
+    param.alfa = 0.1818;%0.3981;%deg2rad(56.4012);     % 52.11
+    param.omega = 0.4455;%0.6936;%deg2rad(49.7791);    % 0.13
+    param.delta = 0.2164;%0.4914;%deg2rad(1.4074);  % 0.5041
     param.offset = 0;
     
     % Trajectory
@@ -73,8 +73,8 @@ for N=3:1:100
     qu          = [theta(param.N);p(1);p(2)];
     qaDot       = fiDot;
     quDot       = [thetaDot(param.N);pDot(1);pDot(2)];
-    x0          = [qa;qu;qaDot;quDot;zeros(2*param.N,1)];%;zeros(2*param.N,1)
-    %x0          = [qa;qu;qaDot;quDot];
+    %x0          = [qa;qu;qaDot;quDot;zeros(2*param.N,1)];%;zeros(2*param.N,1)
+    x0          = [qa;qu;qaDot;quDot];
     
     %% Solve
     
