@@ -1,4 +1,4 @@
-function [xDot] = dynamicModel(t,x,param,optParametre)
+function [xDot] = dynamicModel(t,x,param)
     %% Basic parameters
     ut          = param.ut;                     % Coulomb friction coefphicient of a ground in tangential direction
     un          = param.un;                     % Coulomb friction coefphicient of a ground in normal direction 
@@ -12,11 +12,14 @@ function [xDot] = dynamicModel(t,x,param,optParametre)
     diameterI   = param.diameterInfluence;      % Auxiliary variable
     m           = param.m;                      % Weight of snake robot link
     g           = param.g;                      % Gravitational acceleration
-    alpha       = optParametre(1);              % Parameter of lateral undulation pattern
-    omega       = optParametre(2);              % Parameter of lateral undulation pattern
-    delta       = optParametre(3);              % Parameter of lateral undulation pattern
+    %alphaA       = optParameters(1);              % Parameter of lateral undulation pattern
+    %omega       = optParameters(2);              % Parameter of lateral undulation pattern
+    %delta       = optParameters(3);              % Parameter of lateral undulation pattern
     offset      = param.offset;                 % Parameter of lateral undulation pattern
-    viscous     = param.viscous;                % Auxiliary variable for phirction determination
+    alphaA      = param.alphaA;
+    omega       = param.omega;
+    delta       = param.delta;
+    viscous     = param.friction;                % Auxiliary variable for phirction determination
     contact     = param.contact;                % Auxiliary variable for contact determination
     utPipe      = param.utPipe;                 % Coulomb friction coefphicient of a side wall
     ctPipe      = param.ctPipe;                 % Viscous friction coefphicient of a side wall
@@ -169,7 +172,7 @@ function [xDot] = dynamicModel(t,x,param,optParametre)
 
     %% Contact
     % ============================== Contact ==============================
-    if kontakt == 1
+    if contact == 1
         for i1=1:N
             fcn(i1,1) = 0;
             fctBo1l(i1,1) = 0;
@@ -224,9 +227,9 @@ function [xDot] = dynamicModel(t,x,param,optParametre)
     %% Model
 
     for i=1:N-1
-        phi_required         = alpha*sin((omega*t+(i-1)*delta)) + offset;
-        phiDot_required      = alpha*omega*cos((omega*t+(i-1)*delta));
-        phiDotDot_required   = -alpha*omega*omega*sin((omega*t+(i-1)*delta));
+        phi_required         = alphaA*sin((omega*t+(i-1)*delta)) + offset;
+        phiDot_required      = alphaA*omega*cos((omega*t+(i-1)*delta));
+        phiDotDot_required   = -alphaA*omega*omega*sin((omega*t+(i-1)*delta));
         u(i,1)              = phiDotDot_required + kp*(phi_required - phi(i)) + kd*(phiDot_required - phiDot(i));
         if(u(i,1)>umax)
             u(i,1) = umax;

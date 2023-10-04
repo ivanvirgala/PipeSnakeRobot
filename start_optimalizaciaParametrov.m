@@ -3,11 +3,11 @@ clc;
 clearvars -except FpContactless15 FpContactless30 FpContactless45 FpContactless60 FpContactless75 coul
 %% ============================= Parameters ===============================
 % Snake parameters (mass: m; length: 2l)
-param.N  = 18;
+param.N  = 20;
 param.m  = 0.406;
 param.l  = 0.0525;
 param.g  = 9.81;
-param.priemer = 0.30;
+param.priemer = 0.50;
 param.priemerInfluence = 0.10;
 dlzkaPotrubia = 3;
 param.d = param.priemer - 2*param.l;
@@ -26,7 +26,7 @@ param.Erub = 400000; %last 400000 %95000
 param.vrub = 0.49; 
 param.tlmic = .5;
 param.pruzina = 5;
-param.trenie = 0;   % 0 - Coulomb, 1 - viscous
+param.trenie = 1;   % 0 - Coulomb, 1 - viscous
 param.kontakt = 1;   % 0 - bez, 1 - s
 param.minLinkVel = 0.001;   % [mm]
 param.dimensionPlot3D = 0;  % 0 - 2D, 1 - 3D
@@ -34,19 +34,19 @@ param.resultsShow = 0;  % 0 - show simulation, 1 - show graphs
 
 
 % Optimization
-optimization = 1;   % 0 - without, 1 - with
+optimization = 0;   % 0 - without, 1 - with
 
 % Controler parameters:
 param.kp  = 25; %%%***
 param.kd  = 10; %%%***
 
 % Simulation time:
-t=0:param.dt:20;
+t=0:param.dt:60;
 
 % Reference trajectory parameters:
 
 % 0.3981    0.6936    0.4914
-param.alfa = 0.3981;.............%deg2rad(56.4012);     % 52.11
+param.alfa = 0.63981;.............%deg2rad(56.4012);     % 52.11
 param.omega = 0.6936;..............%deg2rad(49.7791);    % 0.13
 param.delta = 0.4914;.............%deg2rad(1.4074);  % 0.5041
 param.offset = 0;
