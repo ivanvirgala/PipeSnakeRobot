@@ -1,5 +1,7 @@
 function [xDot] = dynamicModel(t,x,param)
+    % ==============================================================================================================
     %% Basic parameters
+    % ==============================================================================================================
     ut          = param.ut;                     % Coulomb friction coefphicient of a ground in tangential direction
     un          = param.un;                     % Coulomb friction coefphicient of a ground in normal direction 
     ct          = param.ct;                     % Viscous friction coefphicient of a ground in tangental direction
@@ -27,8 +29,9 @@ function [xDot] = dynamicModel(t,x,param)
     minLinkVel  = param.minLinkVel;             % Auxiliary parameter 
     d = diameter - 2*l;                         % Theoretical diameter for snake robot links
     I = (m*(2*l)^2)/3;                          % Moment of inertia
-
+    % ==============================================================================================================
     %% Auxiliary matrices
+    % ==============================================================================================================
     for i1=1:N-1
         for i2 = 1:(N)
             if(i1==i2)
@@ -107,8 +110,9 @@ function [xDot] = dynamicModel(t,x,param)
     k = ones(1,N)';   
     j = zeros(1,N)';
     j(N) = -1;   
-
+    % ==============================================================================================================
     %% Kinematic model
+    % ==============================================================================================================
     phi     = x(1:N);
     p       = x(N+1:N+2);
     phiDot  = x(N+3:2*N+2);
@@ -156,9 +160,9 @@ function [xDot] = dynamicModel(t,x,param)
     
     dXc = K*dX - l*Sm*thetaDot;
     dYc = K*dY + l*Cm*thetaDot;
-    
+    % ==============================================================================================================
     %% Friction
-
+    % ==============================================================================================================
     % Viscous
     if(viscous==1)
         fr = -[ct*(Cm*Cm)+cn*(Sm*Sm), (ct-cn)*Sm*Cm;(ct-cn)*Sm*Cm, ct*(Sm*Sm)+cn*(Cm*Cm)]*[dXc;dYc];
@@ -166,9 +170,9 @@ function [xDot] = dynamicModel(t,x,param)
     % Coulomb
         fr = -m*g*[ut*Cm, -un*Sm;ut*Sm, un*Cm]*sign([Cm, Sm;-Sm, Cm]*[dXc;dYc]);
     end
-
-    %% Contact
-    % ============================== Contact ==============================
+    % ==============================================================================================================
+    %% Contact model
+    % ==============================================================================================================
     if contact == 1
         for i1=1:N
             fcn(i1,1) = 0;
@@ -221,8 +225,9 @@ function [xDot] = dynamicModel(t,x,param)
     end
 
     ground = fcontact + fr;
-    %% Model
-
+    % ==============================================================================================================
+    %% Dynamic model
+    % ==============================================================================================================
     for i=1:N-1
         phi_required         = alphaA*sin((omega*t+(i-1)*delta)) + offset;
         phiDot_required      = alphaA*omega*cos((omega*t+(i-1)*delta));
