@@ -4,4 +4,4 @@ Open source code written in MATLAB for the paper Mathematical framework for snak
 
 Run the script by start.m
 
-The results of snake robot motion are in the variable X. Position of snake robot CoM is in (N+1)-th and (N+2)-th column of vector X.
+The results of snake robot motion are in the matrix X. Position of snake robot CoM is in (N+1)-th and (N+2)-th column of matrix X.
