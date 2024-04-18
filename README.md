@@ -10,7 +10,7 @@ The results of snake robot motion are in the matrix X. Position of snake robot C
 
 = Citing the framework =
 ========================
-If you use the Toolbox and want to cite it in a paper please use:
+If you use the framework and want to cite it in a paper please use:
 
 @article{VIRGALA2024,
 title = {Mathematical framework for snake robot motion in a confined space},
