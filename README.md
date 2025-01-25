@@ -8,6 +8,13 @@ Run the script by start.m
 The results of snake robot motion are in the matrix X. Position of snake robot CoM is in (N+1)-th and (N+2)-th column of the matrix X.
 
 
+![Snake robot motion animation](images/animationModified.jpg)
+
+
+
+![Snake robot traveled distance](images/locomotion2D_Walls_coulomb_015_025Modified.jpg)
+
+
 = Citing the framework =
 ========================
 If you use the framework and want to cite it in a paper please use:
