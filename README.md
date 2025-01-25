@@ -7,12 +7,9 @@ Run the script by start.m
 
 The results of snake robot motion are in the matrix X. Position of snake robot CoM is in (N+1)-th and (N+2)-th column of the matrix X.
 
-<div style="text-align: center;">
-  <img src="images/animationModified.jpg" alt="Robot" width="400">
-</div>
-
-<div style="text-align: center;">
-  <img src="images/locomotion2D_Walls_coulomb_015_025Modified.jpg" alt="Robot" width="400">
+<div style="display: flex; justify-content: center; gap: 10px;">
+  <img src="images/animationModified.jpg" alt="Robot 1" width="300">
+  <img src="images/locomotion2D_Walls_coulomb_015_025Modified.jpg" alt="Robot 2" width="300">
 </div>
 
 = Citing the framework =
